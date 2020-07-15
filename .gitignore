@@ -1,0 +1,4 @@
+*.npy
+het_seir/*
+.ipynb_*
+__pycache__/*

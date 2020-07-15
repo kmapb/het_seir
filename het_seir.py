@@ -20,7 +20,7 @@ NUM_STATES = 4
 S1_SUSCEPTIBILITY = 0.1
 S2_SUSCEPTIBILITY = 1.0
 
-INITIAL_S1_PROPORTION = 0.0
+INITIAL_S1_PROPORTION = 0.1
 INITIAL_S2_PROPORTION = 1.0 - INITIAL_S1_PROPORTION
 INITIAL_SEEDING = 1e-4
 # Odds on a given day of recovering
@@ -57,7 +57,7 @@ def generation(pop, M, params):
 
 
 def generations(pop, M, params, num_gens):
-    gens = np.zeros(shape=(NUM_GENS, NUM_STATES))
+    gens = np.zeros(shape=(num_gens, NUM_STATES))
     for g in range(0, num_gens):
         pop = generation(pop, M, params)
         gens[g] = pop
@@ -69,6 +69,7 @@ def init_pop(params):
     pop[S1] = params['init_s1']
     pop[S2] = params['init_s2']
     pop[INF] = params['seeding']
+    return pop
 
 
 def init_matrix(params):
@@ -82,12 +83,13 @@ def init_matrix(params):
 
 
 def run(params, num_gens):
+    params = model_params(params)
     pop = init_pop(params)
     M = init_matrix(params)
     return generations(pop, M, params, num_gens)
 
 
 if __name__ == "__main__":
-    gens = run(model_params({}), 100)
+    gens = run({}, 100)
     np.save('generations.numpy', gens)
     sys.exit()
